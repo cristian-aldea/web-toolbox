@@ -8,7 +8,6 @@ links = [
     ".eslintrc.js",
     ".pre-commit-config.yaml", 
     ".prettierrc", 
-    "package.json", 
     "rollup.config.dev.js", 
     "rollup.config.prod.js",
     "tsconfig.json"
@@ -16,7 +15,8 @@ links = [
 
 init_copies = [
     "src/",
-    ".gitignore"
+    ".gitignore",
+    "package.json" 
 ]
 
 force_copies = [
