@@ -1,54 +1,64 @@
 import os
-from distutils.dir_util import copy_tree
-from distutils.file_util import copy_file
+import shutil
+from ast import List
+from unittest import case
 
 src_dir = "web-toolbox/"
 
-links = [
+sources = [
+    "src/",
+    "src/copy/favicon.png",
     ".eslintrc.js",
-    ".pre-commit-config.yaml", 
-    ".prettierrc", 
-    "rollup.config.dev.js", 
+    ".gitignore",
+    ".pre-commit-config.yaml",
+    ".prettierrc",
+    "package.json",
+    "rollup.config.dev.js",
     "rollup.config.prod.js",
     "tsconfig.json"
 ]
 
-init_copies = [
-    "src/",
-    ".gitignore",
-    "package.json" 
-]
 
-force_copies = [
-    "src/copy/favicon.png"
-]
+def get_input(message: str, options: list[str]) -> int:
+    while True:
+        response = input(message)
 
-for link in links:
-    src = src_dir+link
-    dest = link
-    print("Linking", src, "to", dest)
-    os.remove(dest)
-    os.symlink(src, dest)
+        if response not in options:
+            print("ERROR - please pick a value in", options)
+            continue
 
-for copy in init_copies:
-    src = src_dir+copy
-    dest = copy
+        return response
 
-    if os.path.isfile(dest) or os.path.isdir(dest):
-        print("dest", dest, "already exists. Skipping...")
+
+for source in sources:
+    src = src_dir+source
+    dest = source
+
+    if not os.path.exists(src):
+        print("ERROR - Failed to find source "+src+". Skipping")
         continue
 
-    print("Copying", src, "to", dest)
-    if os.path.isdir(src):
-        copied = copy_tree(src, dest)
-        print("Files copied:", copied)
-    elif os.path.isfile(src):
-        copy_file(src, dest)
-    else:
-        print("ERROR - can't find source file/dir to copy:", src)
+    print("\nProcessing '"+src+"' -> '"+dest+"' ", end="")
 
-for copy in force_copies:
-    src = src_dir+copy
-    dest = copy
-    print("Copying", src, "to", dest)
-    copy_file(src, dest)
+    if os.path.isdir(src):
+        option = get_input(
+            "PICK ONE: copy (c), skip (s): ", ["c", "s"])
+    else:
+        option = get_input(
+            "PICK ONE: link (l), copy (c), skip (s): ", ["l", "c", "s"])
+
+    if option != "s":
+        if os.path.isfile(dest):
+            os.remove(dest)
+        elif os.path.isdir(dest):
+            shutil.rmtree(dest)
+
+    if option == "l":
+        os.symlink(src, dest)
+    elif option == "c":
+        if os.path.isfile(src):
+            shutil.copyfile(src, dest)
+        else:
+            shutil.copytree(src, dest)
+    else:
+        print("Skipping...")

@@ -19,8 +19,10 @@ python web-toolbox/setup.py
 
 ## Updates
 
-To update the boilerplate from within your project, run:
+To update the web-toolbox from within your project, run:
 
 ```bash
 git submodule update --remote
 ```
+
+you can then rerun the setup script to get the latest features
