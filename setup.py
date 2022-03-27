@@ -9,7 +9,6 @@ sources = [
     "src/",
     "src/copy/favicon.png",
     ".eslintrc.js",
-    ".gitignore",
     ".pre-commit-config.yaml",
     ".prettierrc",
     "package.json",
