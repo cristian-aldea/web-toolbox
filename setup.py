@@ -7,11 +7,12 @@ src_dir = "web-toolbox/"
 
 sources = [
     "assets/",
+    "public/",
     "src/",
-    "index.html",
     ".eslintrc.js",
     ".pre-commit-config.yaml",
     ".prettierrc",
+    "index.html",
     "vite.config.js"
 ]
 
